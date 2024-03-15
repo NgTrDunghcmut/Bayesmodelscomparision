@@ -36,3 +36,4 @@ parameter_knn = {
     "algo__leaf_size": [1, 10, 11, 30],
 }
 model = GridSearchCV(pipe, parameter_knn, cv=10, n_jobs=-1, verbose=1)
+# print(clr.start + f".:. Fitting {algo_name} .:." + clr.end)
