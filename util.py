@@ -123,26 +123,7 @@ def get_mnist_data(sampling_step=20):
     val_y = val_y[0::sampling_step]
     test_x = test_x[0::sampling_step, :]
     test_y = test_y[0::sampling_step]
-    print(type(train_y))
-    # For debugging purpose
-    # train_x = train_x.reshape((num_train, 28, 28))
-    # test_x = test_x.reshape((num_test, 28, 28))
-    # plt.ion()
-    # for i in range(0, num_train, 1000):
-    #     img = train_x[i, :, :]
-    #     plt.clf()
-    #     plt.imshow(img, cmap="gray")
-    #     plt.show()
-    #     plt.pause(0.1)
-    #     print(i)
 
-    # for i in range(0, num_test, 100):
-    #     img = test_x[i, :, :]
-    #     plt.clf()
-    #     plt.imshow(img, cmap="gray")
-    #     plt.show()
-    #     plt.pause(0.1)
-    #     print(i)
     print("Done reading")
     print("train_x shape:", train_x.shape)
     print("train_y shape:", train_y.shape)
@@ -150,7 +131,6 @@ def get_mnist_data(sampling_step=20):
     print("val_y shape:", val_y.shape)
     print("test_x shape:", test_x.shape)
     print("test_y shape:", test_y.shape)
-    # print("train_x shape:",train_x.shape)
     return (
         train_x.astype(np.float32),
         train_y,
@@ -160,8 +140,6 @@ def get_mnist_data(sampling_step=20):
         test_y,
     )
 
-
-# print(get_mnist_data())
 
 if __name__ == "__main__":
     get_vehicle_data()
