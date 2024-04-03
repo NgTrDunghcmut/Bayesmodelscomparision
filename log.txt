@@ -1,9 +1,0 @@
-log note:
-17/3/2024 18:29: changed to SGD and got worse
-17/3/2024 19:29: decided to get rid of the accuracy as a updating metric
-17/3/2024 20:10: get_vehicle_data averanged at loss = 0.234, val_loss = 0.33
-17/3/2024 20:46: tried hand writing dataset from mnist
-17/3/2024 22:10: tried hand writing dataset from mnist, loss = 0.004
-failed to classify with the encoded data, accuracy =58%
-17/3/2024 22:40: tried hand writing dataset from the old get_mnist_data(), loss = 0.004
-improve classifyingg with the encoded data, accuracy gained 2% =)))

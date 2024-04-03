@@ -7,7 +7,8 @@ import gzip
 import glob
 import numpy as np
 import sys
-
+import seaborn as sns
+import pandas as pd
 import matplotlib.pyplot as plt
 import pdb
 
@@ -99,6 +100,45 @@ def read_mnist_gz(data_path, offset):
     return dataset
 
 
+from sklearn.metrics import roc_curve, roc_auc_score
+
+
+def ROC(y_test, y_pred):
+    fpr, tpr, tr = roc_curve(y_test, y_pred)
+    auc = roc_auc_score(y_test, y_pred)
+    idx = np.argwhere(np.diff(np.sign(tpr - (1 - fpr)))).flatten()
+
+    plt.xlabel("FPR")
+    plt.ylabel("TPR")
+    plt.plot(fpr, tpr, label="AUC=" + str(auc))
+    plt.plot(fpr, 1 - fpr, "r:")
+    plt.plot(fpr[idx], tpr[idx], "ro")
+    plt.legend(loc=4)
+    plt.grid()
+    plt.show()
+    return tr[idx]
+
+
+def confusion_matrix(target, predicted, perc=False):
+
+    data = {"y_Actual": target, "y_Predicted": predicted}
+    df = pd.DataFrame(data, columns=["y_Predicted", "y_Actual"])
+    confusion_matrix = pd.crosstab(
+        df["y_Predicted"], df["y_Actual"], rownames=["Predicted"], colnames=["Actual"]
+    )
+
+    if perc:
+        sns.heatmap(
+            confusion_matrix / np.sum(confusion_matrix),
+            annot=True,
+            fmt=".2%",
+            cmap="Blues",
+        )
+    else:
+        sns.heatmap(confusion_matrix, annot=True, fmt="d")
+    plt.show()
+
+
 def get_mnist_data(sampling_step=20):
     print("Reading fashion MNIST data...")
     train_x = read_mnist_gz(".//fashion-mnist/train-images-idx3-ubyte.gz", 16)
@@ -123,7 +163,26 @@ def get_mnist_data(sampling_step=20):
     val_y = val_y[0::sampling_step]
     test_x = test_x[0::sampling_step, :]
     test_y = test_y[0::sampling_step]
+    print(type(train_y))
+    # For debugging purpose
+    # train_x = train_x.reshape((num_train, 28, 28))
+    # test_x = test_x.reshape((num_test, 28, 28))
+    # plt.ion()
+    # for i in range(0, num_train, 1000):
+    #     img = train_x[i, :, :]
+    #     plt.clf()
+    #     plt.imshow(img, cmap="gray")
+    #     plt.show()
+    #     plt.pause(0.1)
+    #     print(i)
 
+    # for i in range(0, num_test, 100):
+    #     img = test_x[i, :, :]
+    #     plt.clf()
+    #     plt.imshow(img, cmap="gray")
+    #     plt.show()
+    #     plt.pause(0.1)
+    #     print(i)
     print("Done reading")
     print("train_x shape:", train_x.shape)
     print("train_y shape:", train_y.shape)
@@ -131,6 +190,7 @@ def get_mnist_data(sampling_step=20):
     print("val_y shape:", val_y.shape)
     print("test_x shape:", test_x.shape)
     print("test_y shape:", test_y.shape)
+    # print("train_x shape:",train_x.shape)
     return (
         train_x.astype(np.float32),
         train_y,
@@ -140,6 +200,8 @@ def get_mnist_data(sampling_step=20):
         test_y,
     )
 
+
+# print(get_mnist_data())
 
 if __name__ == "__main__":
     get_vehicle_data()
